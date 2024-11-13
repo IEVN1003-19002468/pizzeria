@@ -1,19 +1,44 @@
-<div class="p-4 border-4 border-yellow-500 rounded">
-    <p class="font-bold text-lg">Ventas del día</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Total de Ventas</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let nombre of ventasPorNombre | keyvalue">
-          <td>{{ nombre.key }}</td>
-          <td>{{ nombre.value | currency }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <button class="bg-yellow-500 text-white px-4 py-2 rounded mt-4" (click)="dameVentas()">Ventas totales por día</button>
+<div class="p-4 bg-blue-300 rounded">
+  <p class="font-bold text-lg">Ventas del día</p>
+
+  <form [formGroup]="formGroup" (ngSubmit)="dameVentas()">
+
+
+    <div class="flex items-center">
+      <label for="fecha" class="mr-2 text-gray-700 font-medium">Selecciona una fecha:</label>
+      <input type="date" id="fecha" name="fecha" 
+             class="border border-gray-300 rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" formControlName="fechaVenta">
+    </div>
+    
+    
+
+
+    <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded mt-4" >Ventas totales
+      por día</button>
+  </form>
+  <table *ngIf="ventasPorNombre">
+    <thead>
+      <tr>
+        <th class="text-center">Nombre</th>
+        <th>Total de Ventas</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let nombre of ventasPorNombre | keyvalue">
+        <td>{{ nombre.key }}</td>
+        <td>{{ nombre.value | currency }}</td>
+      </tr>
+    </tbody>
+    
+  </table>
+
+
+</div>
+<p class="font-bold text-lg"></p>
+
+<div id="loadingModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 " *ngIf="cargando">
+  <div class="bg-white p-8 rounded-lg shadow-lg">
+    <img src="https://i.gifer.com/41pV.gif" alt="Cargando..." class="w-32 h-32 mx-auto">
+    <p class="text-center mt-4">Cargando...</p>
   </div>
-  
+</div>

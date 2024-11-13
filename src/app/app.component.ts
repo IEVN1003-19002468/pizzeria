@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ClienteComponent } from './componentes/cliente/cliente.component';
 import { OrdenResumenComponent } from './componentes/orden-resumen/orden-resumen.component';
 import { OrdenComponent } from './componentes/orden/orden.component';
 import { VentasDiariasComponent } from './componentes/ventas-diarias/ventas-diarias.component';
@@ -13,7 +12,7 @@ export interface Orden {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,ClienteComponent,OrdenResumenComponent,OrdenComponent,VentasDiariasComponent],
+  imports: [RouterOutlet,OrdenResumenComponent,OrdenComponent,VentasDiariasComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

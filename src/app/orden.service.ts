@@ -7,10 +7,11 @@ import { Injectable } from '@angular/core';
 export class OrdenServicio {
   ordenes: any[] = [];
   pedido: any[] = [];
+  totalesDia = 0;
 
   constructor() { }
 
-  add(nombre: string, direccion: string, tel: string, tamanio: string, ingredientes: string, cantidad: number, subtotal: number) {
+  add(nombre: string, direccion: string, tel: string, tamanio: string, ingredientes: string, cantidad: number, subtotal: number,hoy:string) {
     const nuevaOrden = {
       nombre,
       direccion,
@@ -18,7 +19,8 @@ export class OrdenServicio {
       tamanio,
       ingredientes,
       cantidad,
-      subtotal
+      subtotal,
+      hoy
     };
     this.ordenes.push(nuevaOrden);
   }
@@ -37,20 +39,28 @@ export class OrdenServicio {
     });
 
   }
-  dameVentasDia() {
+  dameVentasDia(fechaVenta:string) {
     const pedidoGuardado = JSON.parse(localStorage.getItem('pedido') || '[]');
 
-
+    
     const ventasPorNombre = pedidoGuardado.reduce((totales: any, orden: any) => {
+      console.log(orden.hoy,fechaVenta);
+      if (orden.hoy==fechaVenta) {      
+      
       if (!totales[orden.nombre]) {
         totales[orden.nombre] = 0;
       }
       totales[orden.nombre] += orden.subtotal;
+      this.totalesDia += orden.subtotal;
       return totales;
+    }
+    
     }, {});
 
     return ventasPorNombre;
   }
+ 
+
   quitarOrden(index: number) {
     this.ordenes.splice(index, 1);
   }

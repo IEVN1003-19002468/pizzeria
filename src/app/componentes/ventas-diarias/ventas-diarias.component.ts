@@ -1,20 +1,51 @@
 import { Component } from '@angular/core';
 import { OrdenServicio } from '../../orden.service';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-ventas-diarias',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './ventas-diarias.component.html',
   styleUrl: './ventas-diarias.component.css'
 })
 export class VentasDiariasComponent {
-  constructor(public ordenServicio: OrdenServicio) {}
   ventasPorNombre: { [nombre: string]: number } = {};
+  formGroup !: FormGroup;
+  cargando = false;
+  constructor(public ordenServicio: OrdenServicio, private fb: FormBuilder) {
+    this.formGroup = this.fb.group({
+      fechaVenta: ['']
+    });
+  }
+
+  ngOnInit(): void {
+    this.formGroup = this.initForm();
+    this.cargando = false;
+
+
+  }
+
+  initForm(): FormGroup {
+    return this.fb.group({
+      fechaVenta: [''],
+
+    })
+  }
   dameVentas() {
-    this.ventasPorNombre = this.ordenServicio.dameVentasDia();
-    console.log(this.ventasPorNombre); 
+   
+   
+    this.simularTrabajoLargo();
+    this.cargando=true;
+   
+
+  }
+  simularTrabajoLargo(): void {
+    setTimeout(() => {
+      let { fechaVenta } = this.formGroup.value;
+      this.ventasPorNombre = this.ordenServicio.dameVentasDia(fechaVenta);
+      this.cargando = false;
+    }, 1000); 
   }
 }
